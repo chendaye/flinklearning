@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>flink-learning</artifactId>
+        <groupId>top.chendaye666.flink</groupId>
+        <version>1.0-SNAPSHOT</version>
+        <!--
+            省略了 <relativePath></relativePath>
+             由于 relativePath 默认是 ../pom.xml 而我们的子项目
+             确实在父项目的下一级目录中，所以是可以不用填写的
+         -->
+<!--        <relativePath>../pom.xml</relativePath>-->
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <!--
+        artifactId 是子模块的组件id，由于继承了父pom，
+        所以groupId、version 也可以不写，不写的话就默认继承自父pom
+    -->
+    <artifactId>flink-learning-muke</artifactId>
+
+    <dependencies>
+        <!--        如果子模块间相互依赖,需要在 dependency 中引入要依赖的子模块-->
+        <dependency>
+            <groupId>top.chendaye666.flink</groupId>
+            <artifactId>flink-learning-common</artifactId>
+        </dependency>
+    </dependencies>
+
+
+</project>
