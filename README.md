@@ -43,3 +43,41 @@ dependencyManagement
 ```
 
 [pom 介绍](https://zhuanlan.zhihu.com/p/76874769)
+
+
+# Scope
+
+````$xslt
+compile:
+This is the default scope, used if none is specified. Compile dependencies are available in all classpaths of a project. Furthermore, those dependencies are propagated to dependent projects.
+（未指定scope时默认使用该项。项目始终依赖使用该jar包。会传递依赖的项目）
+
+provided:
+This is much like compile, but indicates you expect the JDK or a container to provide the dependency at runtime. For example, when building a web application for the Java Enterprise Edition, you would set the dependency on the Servlet API and related Java EE APIs to scope provided because the web container provides those classes. This scope is only available on the compilation and test classpath, and is not transitive.
+（与compile类似，但表明你期望JDK或容器在运行时提供的依赖。例如，当构建一个Web应用程序的java企业版，你将依赖Servlet API和相关的java EE API提供的Web容器提供的范围，用于编译和测试阶段，不具有传递性。jar包不会包含依赖项）
+
+runtime:
+This scope indicates that the dependency is not required for compilation, but is for execution. It is in the runtime and test classpaths, but not the compile classpath.
+（表示被依赖项目不会参与项目的编译，但用于运行和测试。与compile相比，跳过了编译这个环节）
+
+test:
+This scope indicates that the dependency is not required for normal use of the application, and is only available for the test compilation and execution phases. This scope is not transitive.
+（此范围表示应用程序的正常使用不需要依赖项，只适用于测试编译和执行阶段。不具有传递性。）
+
+system:
+This scope is similar to provided except that you have to provide the JAR which contains it explicitly. The artifact is always available and is not looked up in a repository.
+（与provided相似，但必须我们给它提供显式JAR包。不会从maven远程中央仓库下载，而是从本地Maven仓库中获取。）
+
+import (only available in Maven 2.0.9 or later)：
+This scope is only supported on a dependency of type pom in the section. It indicates the dependency to be replaced with the effective list of dependencies in the specified POM’s section. Since they are replaced, dependencies with a scope of import do not actually participate in limiting the transitivity of a dependency.
+（import scope只能用在dependencyManagement里面。表示从其它的pom中导入dependency的配置。）
+
+
+事情是这样的：
+第一次，我在本地写的spark代码需要提到spark集群上运行，集群中一运行就报某个类找不到（没有打包到jar中）。
+原因是因为我把scope的配置项写成了provided，这样打成的包中根本没有依赖的jar，将scope依赖项注释掉，再重新打包，提交集群运行就没问题了。
+
+第二次，我是写的spark sql的代码在本地运行，运行时还是报某个类找不到。
+同样这次配置还是provided，就是本地运行，不打包，不碍事吧应该，但还是找不到类。同样的配置在eclipse中运行正常，IDEA中就是不行。
+
+````
